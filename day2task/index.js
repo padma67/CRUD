@@ -48,22 +48,26 @@ app.get("/allStudents", (req, res) => {
 });
 
 app.put("/editStudent/:id",(req,res)=>{
-for(let k=0;k<studentDetails;k++){
-  if(studentDetails[k].id===req.params.id){
-    studentDetails[k].name==="Gokul";
+studentDetails.forEach((elem)=>{
+  if(elem.id == req.params.id){
+    elem.name = req.body.name;
+    res.status(200).send({
+      message:"User Updated..!"
+    })
   }
-}
+ 
+})
 res.send("student name is edited")
 });
 
 app.delete("/deleteStudent/:id",(req,res)=>{
-  const sid=req.params.id;
-  studentDetails=studentDetails.filter((val)=>{
-    if(val.id!==sid){
-      return true;
+ let filterval=studentDetails.filter((val)=>{
+    if(val.id == req.params.id){
+      return val
     }
-    return false;
-  });
+  })[0];
+  let index =studentDetails.indexOf(filterval);
+  studentDetails.splice(index,1);
   res.json({"message":"student deleted"})
 })
 app.listen(process.env.PORT || port, () => {
